@@ -1,0 +1,37 @@
+---
+title: "class_11-14_election"
+author: "Jeremy Ornstein"
+date: "11/14/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(googlesheets4)
+library(readxl)
+library(broom)
+```
+
+```{r}
+sheets_deauth()
+sheet <- read_sheet("1QA_Xv9tAbKhwFdQpnVa2hTjhEdg5zAl4WY5EVanWSo0")
+```
+
+```{r}
+
+f <- formula(dvote ~ female)
+
+g <- glm(f, data = sheet, family = "binomial")
+
+h <- lm(f, data = sheet)
+
+sheet %>% ggplot(aes(female, dvote)) +
+  geom_jitter(width = 0.1, size =0.2, alpha = 0.5) +
+  geom_smooth(method = "lm", method.orgs = list(family = "binomail"), se = FALSE)
+
+sheet %>% ggplot(aes(female, dvote)) +
+  geom_jitter(width = 0.05, size =0.2, alpha = 0.5) +
+  geom_smooth(method = "glm", method.orgs = list(family = "binomail"), se = FALSE)
+```
+
